@@ -26,10 +26,10 @@ import static org.hamcrest.Matchers.is;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/classic-spring.xml", "classpath:/cache-spring.xml",
-      //  "classpath:/datasource-embedded-init.xml"
+        "classpath:/datasource-embedded-init.xml"
       //  "classpath:/datasource-embedded-init-p6spy.xml"
       //  "classpath:/datasource-standalone-test.xml"
-           "classpath:/datasource-standalone-p6spy-test.xml"
+         //  "classpath:/datasource-standalone-p6spy-test.xml"
 })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
@@ -46,6 +46,27 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         super.setDataSource(dataSource);
     }
 
+
+  @Test
+  public void cacheable_method_no_params() {
+    long start    ;
+    long duration;
+      start = System.currentTimeMillis();
+      classicRepository.findAllOffices();
+      duration  = System.currentTimeMillis() -start;
+      log.info("1st  took " +(duration)+ " ms");
+
+       start = System.currentTimeMillis();
+      classicRepository.findAllOffices();
+
+      duration  = System.currentTimeMillis() -start;
+      log.info("2nd  took " +duration+ " ms");
+
+
+
+      classicRepository.getStatistics() ;
+
+  }
 
     @Test
     public void p6spy() {

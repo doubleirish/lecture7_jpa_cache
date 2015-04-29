@@ -50,4 +50,13 @@
            diskPersistent="false"
             />
 
+  <cache name="offices"
+            maxElementsInMemory="10"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false"
+            diskPersistent="false"
+             />
+
 </ehcache>

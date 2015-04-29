@@ -11,6 +11,7 @@ import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -96,8 +97,14 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
                 .getResultList();
     }
 
+    @Cacheable("offices")
     public List<Office> findAllOffices() {
-        return em.createQuery("FROM Office", Office.class).getResultList();
+      long start = System.currentTimeMillis();
+      List<Office> resultList = em.createQuery("FROM Office", Office.class).getResultList();
+      long duration = System.currentTimeMillis() -start;
+      log.info("pulled offices from database in " +duration +" ms");
+      return resultList;
+
     }
 
     public List<Object[]> findSalesOfficeForEachCustomer() {
