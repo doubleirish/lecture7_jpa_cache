@@ -81,6 +81,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
 
 
 
+    @Cacheable("classic")
     public Customer findCustomerByCustomerName(String customerName) {
         return (Customer) em.createQuery(
                 "SELECT c FROM Customer c WHERE c.customerName = :customerName")
@@ -88,14 +89,19 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
                 .getSingleResult();
     }
 
+   @Cacheable("custorders")
     public List<Order> findRecentOrdersForCustomer(Customer cust) {
-        return em.createQuery(
-                "SELECT o from Order o   " +
-                        " WHERE o.customer = :cust " +
-                        " order by orderDate ", Order.class)
-                .setParameter("cust", cust)
-                .setMaxResults(10)
-                .getResultList();
+     long start = System.currentTimeMillis();
+     List<Order> orders = em.createQuery(
+         "SELECT o from Order o   " +
+             " WHERE o.customer = :cust " +
+             " order by orderDate ", Order.class)
+         .setParameter("cust", cust)
+         .setMaxResults(10)
+         .getResultList();
+     long duration = System.currentTimeMillis() -start;
+     log.info("pulled orders for ["+cust.getCustomerNumber()+" ]from db in " +duration);
+     return orders;
     }
 
     @Cacheable("offices")

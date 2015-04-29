@@ -190,6 +190,23 @@ public class Customer {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Customer)) return false;
+
+    Customer customer = (Customer) o;
+
+    if (!customerNumber.equals(customer.customerNumber)) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return customerNumber.hashCode();
+  }
+
+  @Override
   public String toString() {
     return "Customer{" +
         "customernumber=" + customerNumber +

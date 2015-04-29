@@ -63,4 +63,26 @@
              statistics="true"
              />             <!-- TODO have to manually add in  statistics-->
 
+
+  <cache name="classic"
+            maxElementsInMemory="100"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false"
+            diskPersistent="false"
+             statistics="true"
+             />
+
+  <cache name="custorders"
+             maxElementsInMemory="100"
+             eternal="false"
+             timeToIdleSeconds="3600"
+             timeToLiveSeconds="3600"
+             overflowToDisk="false"
+             diskPersistent="false"
+              statistics="true"
+              />
+  <!-- TODO have to manually add in  statistics-->
+
 </ehcache>
