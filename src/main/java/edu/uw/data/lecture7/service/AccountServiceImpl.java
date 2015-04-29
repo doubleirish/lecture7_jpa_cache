@@ -2,6 +2,7 @@ package edu.uw.data.lecture7.service;
 
 import edu.uw.data.lecture7.dao.ClassicRepositoryCustom;
 import edu.uw.data.lecture7.model.Customer;
+import edu.uw.data.lecture7.model.Employee;
 import org.hibernate.stat.Statistics;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-   public  Customer findCustomerByName(String name) {
-       return classicRepository.findCustomerByCustomerName(name);
+   public Employee findEmployeeById(Integer id) {
+       return classicRepository.findEmployeeById(id);
     }
 
 

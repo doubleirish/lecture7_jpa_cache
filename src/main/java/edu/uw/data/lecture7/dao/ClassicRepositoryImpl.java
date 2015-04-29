@@ -1,6 +1,7 @@
 package edu.uw.data.lecture7.dao;
 
 import edu.uw.data.lecture7.model.Customer;
+import edu.uw.data.lecture7.model.Employee;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
 import org.hibernate.Criteria;
@@ -36,6 +37,11 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
       return em.find(Customer.class,id);
     }
 
+    @Override
+    public Employee findEmployeeById(Integer id) {
+        return em.find(Employee.class, id);
+    }
+
     public List<Customer> findCustomersByExample(Customer customerEx) {
         Session session = (Session) em.getDelegate();
 
@@ -53,9 +59,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
         return em.createQuery(
                 "SELECT c FROM Customer c WHERE c.state = :state", Customer.class)
                 .setParameter("state", usState)
-                        //.setMaxResults(10)
                 .setHint("org.hibernate.cacheable", true)
-                .setHint("org.hibernate.cacheMode", "NORMAL")
                 .getResultList();
     }
 

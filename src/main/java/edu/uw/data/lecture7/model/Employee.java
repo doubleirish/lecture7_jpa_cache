@@ -9,6 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "EMPLOYEES" )
+
 public class Employee {
   private Integer employeeNumber;
   private String lastName;

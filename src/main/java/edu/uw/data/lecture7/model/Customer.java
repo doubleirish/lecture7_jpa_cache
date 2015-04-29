@@ -18,7 +18,6 @@ import java.util.Set;
         })
 @Entity
 @Table(name = "CUSTOMERS" )
-
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
 public class Customer {
   private Integer customerNumber;

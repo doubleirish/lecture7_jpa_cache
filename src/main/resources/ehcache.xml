@@ -24,13 +24,11 @@
     />
 
     <cache name="edu.uw.data.lecture7.model.Customer"
-           maxElementsInMemory="300"
-           eternal="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="300"
-           overflowToDisk="false"
-           diskPersistent="false"
-            />
+           maxElementsInMemory="300"   eternal="false"
+           timeToIdleSeconds="300"  timeToLiveSeconds="300"
+           overflowToDisk="false"  diskPersistent="false"    />
+
+
 
     <cache name="edu.uw.data.lecture7.model.Product"
            maxElementsInMemory="300"

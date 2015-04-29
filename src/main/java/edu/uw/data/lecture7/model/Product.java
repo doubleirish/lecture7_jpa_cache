@@ -7,9 +7,10 @@ import javax.persistence.*;
 /**
  * Created by credmond on 26/03/15.
  */
+
 @Entity
 @Table(name = "PRODUCTS", schema = "APP", catalog = "")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+
 public class Product {
   private String productcode;
   private String productname;
