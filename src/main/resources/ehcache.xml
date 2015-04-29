@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- in src/main/resources -->
+<ehcache>
+    <diskStore path="java.io.tmpdir" />
+
+    <defaultCache maxElementsInMemory="100" eternal="false"
+                  timeToIdleSeconds="10000" timeToLiveSeconds="60000" overflowToDisk="false" />
+
+    <cache   name="org.hibernate.cache.StandardQueryCache"
+             maxElementsInMemory="5"
+            eternal="false"
+            timeToLiveSeconds="120"
+    />
+
+    <cache  name="org.hibernate.cache.UpdateTimestampsCache"
+            maxElementsInMemory="5000"
+            eternal="false"
+    />
+
+    <cache name="query.AdministrativeAreasPerCountry"
+           maxElementsInMemory="5"
+           eternal="false"
+           timeToLiveSeconds="86400"
+    />
+
+    <cache name="edu.uw.data.lecture7.model.Customer"
+           maxElementsInMemory="300"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="300"
+           overflowToDisk="false"
+           diskPersistent="false"
+            />
+
+    <cache name="edu.uw.data.lecture7.model.Product"
+           maxElementsInMemory="300"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"
+           diskPersistent="false"
+            />
+
+    <cache name="edu.uw.data.lecture7.model.Productline"
+           maxElementsInMemory="300"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"
+           diskPersistent="false"
+            />
+
+</ehcache>

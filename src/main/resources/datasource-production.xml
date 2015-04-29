@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--in real production world this would be a JNDI reference
+     for a datasource defined in the container e.g tomcat's server.xml -->
+
+
+
+    <bean id="dataSource" class="com.p6spy.engine.spy.P6DataSource">
+        <constructor-arg>
+            <bean   class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
+                <property name="url" value="jdbc:derby://localhost:1527/c:/derbydata/classic;create=true"/>
+                <property name="username" value="app"/>
+                <property name="password" value="app"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+</beans>
