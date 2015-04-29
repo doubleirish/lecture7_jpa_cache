@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Statistics getStatistics() {
-          return classicRepository.getStatistics();
+          return classicRepository.getHibernateStatistics();
     }
 
 

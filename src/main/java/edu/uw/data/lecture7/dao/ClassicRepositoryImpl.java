@@ -3,6 +3,7 @@ package edu.uw.data.lecture7.dao;
 import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import net.sf.ehcache.CacheManager;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -114,7 +115,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
 
 
 
-    public   Statistics getStatistics() {
+    public   org.hibernate.stat.Statistics getHibernateStatistics() {
         Session session  = (Session)em.getDelegate();
         SessionFactory sessionFactory = session.getSessionFactory();
         Statistics stats = sessionFactory.getStatistics();
@@ -131,6 +132,15 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
         }
         return stats;
     }
+
+  public   void  printEhcacheStatistics() {
+    CacheManager cacheManager = CacheManager.getInstance();
+    String[] cacheNames = cacheManager.getCacheNames();
+    for (String cacheName : cacheNames) {
+      net.sf.ehcache.Statistics statistics = cacheManager.getCache(cacheName).getStatistics();
+      log.info(cacheName + " - " + statistics.toString());
+    }
+  }
 
 
 

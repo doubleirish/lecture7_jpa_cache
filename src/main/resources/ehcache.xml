@@ -4,7 +4,10 @@
     <diskStore path="java.io.tmpdir" />
 
     <defaultCache maxElementsInMemory="100" eternal="false"
-                  timeToIdleSeconds="10000" timeToLiveSeconds="60000" overflowToDisk="false" />
+                  timeToIdleSeconds="10000" timeToLiveSeconds="60000" overflowToDisk="false"
+
+               statistics="true"
+      />
 
     <cache   name="org.hibernate.cache.StandardQueryCache"
              maxElementsInMemory="5"
@@ -57,6 +60,7 @@
             timeToLiveSeconds="3600"
             overflowToDisk="false"
             diskPersistent="false"
-             />
+             statistics="true"
+             />             <!-- TODO have to manually add in  statistics-->
 
 </ehcache>

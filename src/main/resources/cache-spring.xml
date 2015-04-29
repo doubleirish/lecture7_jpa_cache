@@ -10,11 +10,14 @@
     <bean id="ehCacheManager"
           class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
           p:configLocation="classpath:/ehcache.xml"
-          p:shared="false" />
+
+          p:shared="true" />
 
     <bean id="cacheManager"
           class="org.springframework.cache.ehcache.EhCacheCacheManager"
-          p:cacheManager-ref="ehCacheManager" />
+
+          p:cacheManager-ref="ehCacheManager"
+       />
 
     <cache:annotation-driven cache-manager="cacheManager" />
 

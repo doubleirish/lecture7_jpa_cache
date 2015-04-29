@@ -4,6 +4,8 @@ package edu.uw.data.lecture7.dao;
 import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Embedded database is  always initialized cleanly  as its stored in the target sub dir which is cleared out on each run
@@ -64,7 +67,15 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
 
 
-      classicRepository.getStatistics() ;
+      classicRepository.getHibernateStatistics() ;
+
+    classicRepository.printEhcacheStatistics(); ;
+
+    CacheManager cacheManager = CacheManager.getInstance();
+    Cache officesCache = cacheManager.getCache("offices");
+    long cacheHits = officesCache.getStatistics().getCacheHits();
+    System.out.println( " offices Cache hits ="+cacheHits);
+    assertTrue(cacheHits > 0) ;
 
   }
 
@@ -109,7 +120,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         duration  = System.currentTimeMillis() -start;
         log.info("3rd  took " +duration+ " ms");
 
-        classicRepository.getStatistics() ;
+        classicRepository.getHibernateStatistics() ;
 
     }
 
