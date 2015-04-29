@@ -1,6 +1,7 @@
 package edu.uw.data.lecture7.app;
 
 import edu.uw.data.lecture7.dao.ClassicRepositoryCustom;
+import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,17 +26,30 @@ public class App
 
     log.info("accountService."+accountService);
 
-    log.info("dao."+dao);
+    log.info("dao." + dao);
 
 
-    accountService.findAllCustomersInUsState("CA");
-    accountService.printStatistics();
+    Customer customer =accountService.findCustomerById(357);
+    System.out.println("customer "+customer);
 
-    accountService.findAllCustomersInUsState("WA");
-    accountService.printStatistics();
+    Customer customer2 =accountService.findCustomerById(357);
+    System.out.println("customer again "+customer);
+    assert customer== customer2;
 
-    accountService.findAllCustomersInUsState("CA");
-    accountService.printStatistics();
+
+//
+//    accountService.findAllCustomersInUsState("CA");
+//
+//    accountService.findAllCustomersInUsState("CA");
+//    accountService.getStatistics();
+//
+//    accountService.findAllCustomersInUsState("WA");
+//    accountService.getStatistics();
+//
+//    accountService.findAllCustomersInUsState("CA");
+
+
+    accountService.getStatistics();
 
   }
 }

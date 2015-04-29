@@ -1,5 +1,7 @@
 package edu.uw.data.lecture7.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "PRODUCTS", schema = "APP", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Product {
   private String productcode;
   private String productname;

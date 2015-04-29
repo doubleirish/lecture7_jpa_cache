@@ -1,6 +1,7 @@
 package edu.uw.data.lecture7.service;
 
 import edu.uw.data.lecture7.model.Customer;
+import org.hibernate.stat.Statistics;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface AccountService {
     Customer findCustomerByName(String name);
     List<Customer> findAllCustomersInUsState(String usState);
 
-    void printStatistics( );
+    Statistics getStatistics();
 
 }

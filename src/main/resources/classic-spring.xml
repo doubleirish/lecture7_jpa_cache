@@ -33,13 +33,7 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
 
 <!--
-              hibernate.cache.use_second_level_cache=true
-            hibernate.cache.use_query_cache=true
-            hibernate.generate_statistics=true
             org.hibernate.cache.ehcache.configurationResourceName=/ehcache.xml
-            hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-<property name="hibernate.cache.region.factory_class">
-         org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
 -->
                 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
 

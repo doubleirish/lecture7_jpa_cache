@@ -4,6 +4,7 @@ package edu.uw.data.lecture7.dao;
 import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import org.hibernate.stat.Statistics;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public interface ClassicRepositoryCustom{  // <Entity class , Primary Key aka Id class >)
 
 
-
+    Customer findCustomerById(Integer id);
 
 
     // p6spy illustrator
@@ -40,7 +41,7 @@ public interface ClassicRepositoryCustom{  // <Entity class , Primary Key aka Id
     List<Object[]> findSalesOfficeForEachCustomer();
 
 
-        void printStatistics( );
+    Statistics getStatistics();
 
 
 }

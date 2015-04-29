@@ -32,7 +32,9 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
     private EntityManager em;
 
 
-
+    public Customer findCustomerById(Integer id){
+      return em.find(Customer.class,id);
+    }
 
     public List<Customer> findCustomersByExample(Customer customerEx) {
         Session session = (Session) em.getDelegate();
@@ -43,11 +45,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
         return (List<Customer>) criteria.list();
     }
 
-    public List<Order> findAllOrders_namedQuery(String first, String last) {
 
-        return em.createNamedQuery("Order.findAll", Order.class)
-                .getResultList();
-    }
 
     public List<Customer> findAllCustomersInUsState(String usState) {
         log.info("searching for customers in state " + usState);
@@ -73,7 +71,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
         return em.createQuery(
                 "SELECT c FROM Customer c WHERE c.state = :state", Customer.class)
                 .setParameter("state", usState)
-                  .setHint("org.hibernate.cacheable", true)
+                .setHint("org.hibernate.cacheable", true)
                 .setHint("org.hibernate.cacheMode", "NORMAL")
                 .getResultList();
     }
@@ -109,7 +107,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
 
 
 
-    public   void printStatistics( ) {
+    public   Statistics getStatistics() {
         Session session  = (Session)em.getDelegate();
         SessionFactory sessionFactory = session.getSessionFactory();
         Statistics stats = sessionFactory.getStatistics();
@@ -124,6 +122,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
             log.info("2nd Level Cache(" +regionName+") HIt Count: "+stat2.getHitCount());
             log.info("2nd Level Cache(" +regionName+") Miss Count: "+stat2.getMissCount());
         }
+        return stats;
     }
 
 

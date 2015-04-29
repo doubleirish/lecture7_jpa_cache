@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.is;
  * Embedded database is  always initialized cleanly  as its stored in the target sub dir which is cleared out on each run
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/queryapp-spring.xml", "classpath:/cache-spring.xml",
+@ContextConfiguration(locations = {"classpath:/classic-spring.xml", "classpath:/cache-spring.xml",
       //  "classpath:/datasource-embedded-init.xml"
       //  "classpath:/datasource-embedded-init-p6spy.xml"
       //  "classpath:/datasource-standalone-test.xml"
@@ -88,7 +88,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         duration  = System.currentTimeMillis() -start;
         log.info("3rd  took " +duration+ " ms");
 
-        classicRepository.printStatistics( ) ;
+        classicRepository.getStatistics() ;
 
     }
 
