@@ -46,7 +46,8 @@ public interface ClassicRepositoryCustom{  // <Entity class , Primary Key aka Id
     List<Object[]> findSalesOfficeForEachCustomer();
 
 
-    Statistics getStatistics();
+    Statistics getHibernateStatistics();
+    void  printEhcacheStatistics();
 
 
 }

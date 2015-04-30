@@ -4,6 +4,7 @@ import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Employee;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import net.sf.ehcache.CacheManager;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,7 @@ import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -83,6 +85,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
 
 
 
+    @Cacheable("classic")
     public Customer findCustomerByCustomerName(String customerName) {
         return (Customer) em.createQuery(
                 "SELECT c FROM Customer c WHERE c.customerName = :customerName")
@@ -90,18 +93,29 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
                 .getSingleResult();
     }
 
+   @Cacheable("custorders")
     public List<Order> findRecentOrdersForCustomer(Customer cust) {
-        return em.createQuery(
-                "SELECT o from Order o   " +
-                        " WHERE o.customer = :cust " +
-                        " order by orderDate ", Order.class)
-                .setParameter("cust", cust)
-                .setMaxResults(10)
-                .getResultList();
+     long start = System.currentTimeMillis();
+     List<Order> orders = em.createQuery(
+         "SELECT o from Order o   " +
+             " WHERE o.customer = :cust " +
+             " order by orderDate ", Order.class)
+         .setParameter("cust", cust)
+         .setMaxResults(10)
+         .getResultList();
+     long duration = System.currentTimeMillis() -start;
+     log.info("pulled orders for ["+cust.getCustomerNumber()+" ]from db in " +duration);
+     return orders;
     }
 
+    @Cacheable("offices")
     public List<Office> findAllOffices() {
-        return em.createQuery("FROM Office", Office.class).getResultList();
+      long start = System.currentTimeMillis();
+      List<Office> resultList = em.createQuery("FROM Office", Office.class).getResultList();
+      long duration = System.currentTimeMillis() -start;
+      log.info("pulled offices from database in " +duration +" ms");
+      return resultList;
+
     }
 
     public List<Object[]> findSalesOfficeForEachCustomer() {
@@ -111,7 +125,7 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
 
 
 
-    public   Statistics getStatistics() {
+    public   org.hibernate.stat.Statistics getHibernateStatistics() {
         Session session  = (Session)em.getDelegate();
         SessionFactory sessionFactory = session.getSessionFactory();
         Statistics stats = sessionFactory.getStatistics();
@@ -128,6 +142,15 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
         }
         return stats;
     }
+
+  public   void  printEhcacheStatistics() {
+    CacheManager cacheManager = CacheManager.getInstance();
+    String[] cacheNames = cacheManager.getCacheNames();
+    for (String cacheName : cacheNames) {
+      net.sf.ehcache.Statistics statistics = cacheManager.getCache(cacheName).getStatistics();
+      log.info(cacheName + " - " + statistics.toString());
+    }
+  }
 
 
 
