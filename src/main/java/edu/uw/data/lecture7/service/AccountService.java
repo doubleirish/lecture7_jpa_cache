@@ -14,6 +14,8 @@ public interface AccountService {
     Employee findEmployeeById(Integer id);
     List<Customer> findAllCustomersInUsState(String usState);
 
+    //List<Office> findAllOffices(String usState);
+
     Statistics getStatistics();
 
 }

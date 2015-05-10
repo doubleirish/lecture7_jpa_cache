@@ -114,7 +114,7 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
 
     @Test
-    public void verifyQueryIsCached() {
+    public void verifyCustomersInStateQueryIsCached() {
 
         //
         // call the    query  the first ime
@@ -153,18 +153,41 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
 
 
+    @Test
+    public void verifyEmployeesInStateQueryIsCached() {
+
+        //
+        // call the    query  the first ime
+        //
+        long start = System.currentTimeMillis();
+        List<Customer> customers = service.findAllCustomersInUsState("CA");
+        long duration  = System.currentTimeMillis() -start;
+        log.info("1st  took " +duration+ " ms");
 
 
+        //
+        // make same query a second time
+        //
+        start = System.currentTimeMillis();
+        List<Customer> customers2 = service.findAllCustomersInUsState("CA");
+        duration  = System.currentTimeMillis() -start;
+        log.info("2nd  took " +duration+ " ms");
+
+        //
+        //  check the hibernate cache hit stats and verify we got a hit on StandardQueryCache
+        //
+        Statistics stats = service.getStatistics();
 
 
+        String regionName = "org.hibernate.cache.internal.StandardQueryCache";
+        SecondLevelCacheStatistics level2QueryCacheStats = stats.getSecondLevelCacheStatistics(regionName);
 
+        log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2QueryCacheStats.getPutCount());
+        log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2QueryCacheStats.getHitCount());
+        log.info("2nd Level Cache(" + regionName + ") Miss Count: " + level2QueryCacheStats.getMissCount());
 
+        assertThat(level2QueryCacheStats.getHitCount(), is(greaterThan(0L)));  //QUEY CACHE HIT
 
-
-
-
-
-
-
+    }
 
 }
