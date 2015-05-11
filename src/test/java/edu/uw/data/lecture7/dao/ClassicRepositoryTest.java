@@ -52,7 +52,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
 
   @Test
-  public void cacheable_method_no_params() {
+  public void cacheable_method_find_offices_no_params() {
     long start    ;
     long duration;
 

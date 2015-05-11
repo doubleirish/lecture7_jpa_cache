@@ -108,14 +108,13 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
      return orders;
     }
 
-    @Cacheable("offices")
+    // @Cacheable("offices")
     public List<Office> findAllOffices() {
       long start = System.currentTimeMillis();
       List<Office> resultList = em.createQuery("FROM Office", Office.class).getResultList();
       long duration = System.currentTimeMillis() -start;
       log.info("pulled offices from database in " +duration +" ms");
       return resultList;
-
     }
 
     public List<Object[]> findSalesOfficeForEachCustomer() {
