@@ -8,6 +8,7 @@ import java.util.Set;
  * Created by credmond on 26/03/15.
  */
 @Entity
+// TODO Lab 1 : add hibernate Cache annotation here
 @Table(name = "EMPLOYEES" )
 
 public class Employee {

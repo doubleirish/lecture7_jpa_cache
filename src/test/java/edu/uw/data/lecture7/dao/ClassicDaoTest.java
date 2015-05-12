@@ -37,18 +37,20 @@ import static org.junit.Assert.assertTrue;
 })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
-public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    static final Logger log = LoggerFactory.getLogger(ClassicRepositoryTest.class);
+    static final Logger log = LoggerFactory.getLogger(ClassicDaoTest.class);
 
-    @Resource(name="classicRepository")
-    private ClassicRepositoryCustom classicRepository;
+    @Resource(name="classicDao")
+    private ClassicDao classicDao;
 
     @Override
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
         super.setDataSource(dataSource);
     }
+
+
 
 
   @Test
@@ -60,7 +62,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
     // first call should pull from database and push into the method cache named "offices"
     //
       start = System.currentTimeMillis();
-      classicRepository.findAllOffices();
+      classicDao.findAllOffices();
       duration  = System.currentTimeMillis() -start;
       log.info("1st  took " +(duration)+ " ms");
 
@@ -68,15 +70,15 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
     // second call should pull from cache
     //
        start = System.currentTimeMillis();
-      classicRepository.findAllOffices();
+      classicDao.findAllOffices();
       duration  = System.currentTimeMillis() -start;
       log.info("2nd  took " +duration+ " ms");
 
 
 
-     classicRepository.getHibernateStatistics() ;
+     classicDao.getHibernateStatistics() ;
 
-    classicRepository.printEhcacheStatistics();
+    classicDao.printEhcacheStatistics();
 
     //
     // assert we got a hit count in the "offices" cache we setup for findAllOffices() method
@@ -96,14 +98,14 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
      long duration;
 
 
-     Customer customerCAF = classicRepository.findCustomerByCustomerName("CAF Imports");
-    Customer customerMini = classicRepository.findCustomerByCustomerName("Mini Wheels Co.");
+     Customer customerCAF = classicDao.findCustomerByCustomerName("CAF Imports");
+    Customer customerMini = classicDao.findCustomerByCustomerName("Mini Wheels Co.");
 
      //
      // first call should pull from database and push into the method cache named "offices"
      //
        start = System.currentTimeMillis();
-       classicRepository.findRecentOrdersForCustomer(customerCAF);
+       classicDao.findRecentOrdersForCustomer(customerCAF);
        duration  = System.currentTimeMillis() -start;
        log.info("1st orders for " +customerCAF.getCustomerName()+"  took " +(duration)+ " ms");
 
@@ -111,7 +113,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
      // second call should pull from cache
      //
         start = System.currentTimeMillis();
-       classicRepository.findRecentOrdersForCustomer(customerCAF);
+       classicDao.findRecentOrdersForCustomer(customerCAF);
        duration  = System.currentTimeMillis() -start;
       log.info("2nd orders for " +customerCAF.getCustomerName()+"  took " +(duration)+ " ms");
 
@@ -121,14 +123,14 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
      // third call should pull from DB
      //
         start = System.currentTimeMillis();
-       classicRepository.findRecentOrdersForCustomer(customerMini);
+       classicDao.findRecentOrdersForCustomer(customerMini);
        duration  = System.currentTimeMillis() -start;
     log.info("3rd orders for " +customerMini.getCustomerName()+"  took " +(duration)+ " ms");
 
 
-      classicRepository.getHibernateStatistics() ;
+      classicDao.getHibernateStatistics() ;
 
-     classicRepository.printEhcacheStatistics();
+     classicDao.printEhcacheStatistics();
 
      //
      // assert we got a hit count in the "offices" cache we setup for findAllOffices() method
@@ -141,50 +143,10 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
    }
 
-    @Test
-    public void p6spy() {
-        Customer customerEx =new Customer();
-        customerEx.setCountry("USA");
-        customerEx.setState("WA");
-        customerEx.setCustomerName("custname");
-        customerEx.setContactFirstname("first");
-        customerEx.setContactLastname("last");
-        customerEx.setAddressLine1("124 main st");
-        customerEx.setCity("seattle");
-        customerEx.setAddressLine2("WA");
-        List<Customer> customers =classicRepository.findCustomersByExample(customerEx);
-        log.info("using customer search criteria :"+customerEx);
-        for (Customer customer : customers) {
-           log.info("found by example :"+customer);
-        }
-    }
 
 
 
 
-    @Test
-    public void findAllCustomersInUsState_SLOW() {
-        long start = System.currentTimeMillis();
-        List<Customer> customers = classicRepository.findAllCustomersInUsState_SLOW("CA");
-
-
-        long duration  = System.currentTimeMillis() -start;
-        log.info("1st  took " +duration+ " ms");
-        start = System.currentTimeMillis();
-        List<Customer> customers2 = classicRepository.findAllCustomersInUsState_SLOW("CA");
-
-          duration  = System.currentTimeMillis() -start;
-        log.info("2nd  took " +duration+ " ms");
-
-
-        start = System.currentTimeMillis();
-         classicRepository.findAllCustomersInUsState_SLOW("CA");
-        duration  = System.currentTimeMillis() -start;
-        log.info("3rd  took " +duration+ " ms");
-
-        classicRepository.getHibernateStatistics() ;
-
-    }
 
 
 
@@ -194,13 +156,13 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
     @Test
     public void findAllCustomersInUsState() {
         long start = System.currentTimeMillis();
-        List<Customer> customers = classicRepository.findAllCustomersInUsState("CA");
+        List<Customer> customers = classicDao.findAllCustomersInUsState("CA");
 
 
         long duration  = System.currentTimeMillis() -start;
         log.info("1st  took " +duration+ " ms");
          start = System.currentTimeMillis();
-        List<Customer> customers2 = classicRepository.findAllCustomersInUsState("CA");
+        List<Customer> customers2 = classicDao.findAllCustomersInUsState("CA");
 
         duration  = System.currentTimeMillis() -start;
         log.info("2nd  took " +duration+ " ms");
@@ -210,11 +172,11 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
     @Test
     public void findOrdersForCustomer() {
         String customerName = "CAF Imports";
-        Customer customer = classicRepository.findCustomerByCustomerName(customerName);
+        Customer customer = classicDao.findCustomerByCustomerName(customerName);
         log.info("found customer " + customer);
         assertThat(customer.getCustomerName(), is(customerName));
 
-        List<Order> orders = classicRepository.findRecentOrdersForCustomer(customer);
+        List<Order> orders = classicDao.findRecentOrdersForCustomer(customer);
         for (Order order : orders) {
             log.info("order    :" + order);
             log.info("  detail :" + order.getOrderDetail());
@@ -223,7 +185,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
     @Test
     public void findAllOffices() {
-        List<Office> offices = classicRepository.findAllOffices();
+        List<Office> offices = classicDao.findAllOffices();
         for (Office office : offices) {
             log.info("office " + office);
         }
@@ -231,7 +193,7 @@ public class ClassicRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
     @Test
     public void findSalesOfficeForEachCustomer() {
-        List<Object[]> offCusts = classicRepository.findSalesOfficeForEachCustomer();
+        List<Object[]> offCusts = classicDao.findSalesOfficeForEachCustomer();
         for (Object[] offCust : offCusts) {
             System.out.println("the sales office for customer " + offCust[1] + " is " + offCust[0]);
         }

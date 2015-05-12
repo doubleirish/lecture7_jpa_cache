@@ -1,6 +1,6 @@
 package edu.uw.data.lecture7.service;
 
-import edu.uw.data.lecture7.dao.ClassicRepositoryCustom;
+import edu.uw.data.lecture7.dao.ClassicDao;
 import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Employee;
 import org.hibernate.stat.Statistics;
@@ -16,30 +16,35 @@ import java.util.List;
 @Transactional()
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
-    @Resource(name="classicRepository")
-    private ClassicRepositoryCustom classicRepository;
+    @Resource(name="classicDao")
+    private ClassicDao classicDao;
 
 
     @Override
     public Customer findCustomerById(Integer id) {
-       return classicRepository.findCustomerById(id);
+       return classicDao.findCustomerById(id);
     }
 
     @Override
    public Employee findEmployeeById(Integer id) {
-       return classicRepository.findEmployeeById(id);
+       return classicDao.findEmployeeById(id);
     }
 
 
 
     @Override
     public List<Customer> findAllCustomersInUsState(String usState) {
-        return classicRepository.findAllCustomersInUsState(usState);
+        return classicDao.findAllCustomersInUsState(usState);
     }
 
     @Override
-    public Statistics getStatistics() {
-          return classicRepository.getHibernateStatistics();
+    public List<Employee> findAllEmployeesWithFirstName_query_LAB(String usState) {
+        return classicDao.findAllEmployeesWithFirstName_query_cache_LAB(usState);
+    }
+
+    @Override
+    public Statistics getHibernateStatistics() {
+          return classicDao.getHibernateStatistics();
     }
 
 

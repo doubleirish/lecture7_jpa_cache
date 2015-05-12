@@ -12,10 +12,12 @@ import java.util.List;
 public interface AccountService {
     Customer findCustomerById(Integer id);
     Employee findEmployeeById(Integer id);
+
     List<Customer> findAllCustomersInUsState(String usState);
+    List<Employee> findAllEmployeesWithFirstName_query_LAB(String usState);
 
     //List<Office> findAllOffices(String usState);
 
-    Statistics getStatistics();
+    Statistics getHibernateStatistics();
 
 }

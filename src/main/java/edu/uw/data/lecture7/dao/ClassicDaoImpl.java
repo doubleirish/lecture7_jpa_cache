@@ -25,10 +25,10 @@ import java.util.List;
  */
 
 
-@Repository("classicRepository")
-public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
+@Repository("classicDao")
+public class ClassicDaoImpl implements ClassicDao {
 
-    static final Logger log = LoggerFactory.getLogger(ClassicRepositoryImpl.class);
+    static final Logger log = LoggerFactory.getLogger(ClassicDaoImpl.class);
 
 
     @PersistenceContext
@@ -66,21 +66,18 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
     }
 
 
-    public List<Customer> findAllCustomersInUsState_SLOW(String usState) {
-        log.info("  searching for customers in state "+usState+ "...");
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+    // TODO QUERY LAB : add a hint to the query below to make it cacheable
+    public List<Employee> findAllEmployeesWithFirstName_query_cache_LAB(String firstName) {
+        log.info("searching for employees with firstName: " + firstName);
 
         return em.createQuery(
-                "SELECT c FROM Customer c WHERE c.state = :state", Customer.class)
-                .setParameter("state", usState)
-                .setHint("org.hibernate.cacheable", true)
-                .setHint("org.hibernate.cacheMode", "NORMAL")
+                "SELECT e FROM Employee e WHERE e.firstName = :firstName", Employee.class)
+                .setParameter("firstName", firstName)
+                  // TODO add hint here
                 .getResultList();
     }
+
+
 
 
 
@@ -108,10 +105,11 @@ public class ClassicRepositoryImpl implements ClassicRepositoryCustom {
      return orders;
     }
 
-    // @Cacheable("offices")
+    // TODO annotate this method with spring @Cacheable using the "offices" cache name
     public List<Office> findAllOffices() {
       long start = System.currentTimeMillis();
-      List<Office> resultList = em.createQuery("FROM Office", Office.class).getResultList();
+      List<Office> resultList = em.createQuery("FROM Office", Office.class)
+              .getResultList();
       long duration = System.currentTimeMillis() -start;
       log.info("pulled offices from database in " +duration +" ms");
       return resultList;

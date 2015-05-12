@@ -1,6 +1,6 @@
 package edu.uw.data.lecture7.app;
 
-import edu.uw.data.lecture7.dao.ClassicRepositoryCustom;
+import edu.uw.data.lecture7.dao.ClassicDao;
 import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.service.AccountService;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class App
     log.info("Spring context initialized.");
 
     AccountService accountService = (AccountService) applicationContext.getBean("accountService");
-    ClassicRepositoryCustom dao = (ClassicRepositoryCustom) applicationContext.getBean("classicRepository");
+    ClassicDao dao = (ClassicDao) applicationContext.getBean("classicRepository");
 
     log.info("accountService."+accountService);
 
@@ -41,15 +41,15 @@ public class App
 //    accountService.findAllCustomersInUsState("CA");
 //
 //    accountService.findAllCustomersInUsState("CA");
-//    accountService.getStatistics();
+//    accountService.getHibernateStatistics();
 //
 //    accountService.findAllCustomersInUsState("WA");
-//    accountService.getStatistics();
+//    accountService.getHibernateStatistics();
 //
 //    accountService.findAllCustomersInUsState("CA");
 
 
-    accountService.getStatistics();
+    accountService.getHibernateStatistics();
 
   }
 }

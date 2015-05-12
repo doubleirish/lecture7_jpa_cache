@@ -15,7 +15,7 @@ import java.util.List;
 
 
 
-public interface ClassicRepositoryCustom{  // <Entity class , Primary Key aka Id class >)
+public interface ClassicDao {  // <Entity class , Primary Key aka Id class >)
 
 
     // Cached Entity
@@ -33,7 +33,8 @@ public interface ClassicRepositoryCustom{  // <Entity class , Primary Key aka Id
 
     List<Customer> findAllCustomersInUsState(String usState);
 
-    List<Customer> findAllCustomersInUsState_SLOW(String usState) ;
+    List<Employee> findAllEmployeesWithFirstName_query_cache_LAB(String usState);
+
 
     Customer findCustomerByCustomerName(String customerName);
 
