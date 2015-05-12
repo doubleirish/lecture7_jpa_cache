@@ -21,30 +21,29 @@ public interface ClassicDao {  // <Entity class , Primary Key aka Id class >)
     // Cached Entity
     Customer findCustomerById(Integer id);
 
-    // not yet Cached Entity
+    // not yet Cached Entity see LAB 1
     Employee findEmployeeById(Integer id)  ;
 
 
-    // p6spy illustrator
-    //named Query
-    List<Customer> findCustomersByExample(Customer customer);
 
 
+    // cached query
+    List<Customer> findAllCustomersInUsState_query_cache(String usState);
 
-    List<Customer> findAllCustomersInUsState(String usState);
-
+    // cached query LAB
     List<Employee> findAllEmployeesWithFirstName_query_cache_LAB(String usState);
 
-
-    Customer findCustomerByCustomerName(String customerName);
-
-    List<Order> findRecentOrdersForCustomer(Customer customer);
+    // method caching example
+    List<Order> findRecentOrdersForCustomer_method_caching(String customerName);
 
 
-    // office employees
-    List<Office> findAllOffices();
+    // method caching lab (no params)
+    List<Office> findAllOffices_method_caching_LAB();
 
-    List<Object[]> findSalesOfficeForEachCustomer();
+    // method caching lab (with params)
+    Customer findCustomerByCustomerName_method_caching_LAB(String customerName);
+
+    List<Object[]> findSalesOfficeForEachCustomer_JCache_example();
 
 
     Statistics getHibernateStatistics();

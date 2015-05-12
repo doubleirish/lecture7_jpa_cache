@@ -20,8 +20,6 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +52,8 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 
 
   @Test
-  public void cacheable_method_find_offices_no_params() {
+  // TODO In the ClassicDaoImpl class annotate the method we call here with spring @Cacheable using the "mymethods" cache name
+  public void findOffices_cache_method_Test_LAB() {
     long start    ;
     long duration;
 
@@ -62,7 +61,7 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
     // first call should pull from database and push into the method cache named "offices"
     //
       start = System.currentTimeMillis();
-      classicDao.findAllOffices();
+      classicDao.findAllOffices_method_caching_LAB(); // TODO add @Cacheable to the method impl  called here
       duration  = System.currentTimeMillis() -start;
       log.info("1st  took " +(duration)+ " ms");
 
@@ -70,7 +69,7 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
     // second call should pull from cache
     //
        start = System.currentTimeMillis();
-      classicDao.findAllOffices();
+      classicDao.findAllOffices_method_caching_LAB();
       duration  = System.currentTimeMillis() -start;
       log.info("2nd  took " +duration+ " ms");
 
@@ -81,10 +80,10 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
     classicDao.printEhcacheStatistics();
 
     //
-    // assert we got a hit count in the "offices" cache we setup for findAllOffices() method
+    // assert we got a hit count in the "offices" cache we setup for findAllOffices_method_caching_LAB() method
     //
     CacheManager cacheManager = CacheManager.getInstance();
-    Cache officesCache = cacheManager.getCache("offices");
+    Cache officesCache = cacheManager.getCache("mymethods");
     long cacheHits = officesCache.getStatistics().getCacheHits();
     System.out.println( " offices Cache hits ="+cacheHits);
     assertTrue(cacheHits > 0) ;
@@ -93,29 +92,30 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 
 
   @Test
-   public void cacheable_method_with_params() {
+  // TODO In the ClassicDaoImpl class annotate the method we call here with spring @Cacheable using the "offices" cache name
+   public void findCustomers_cacheable_method_with_params_Test_LAB() {
      long start    ;
      long duration;
 
 
-     Customer customerCAF = classicDao.findCustomerByCustomerName("CAF Imports");
-    Customer customerMini = classicDao.findCustomerByCustomerName("Mini Wheels Co.");
+     String customerCAF =  "CAF Imports" ;
+      String customerMini = "Mini Wheels Co.";
 
      //
      // first call should pull from database and push into the method cache named "offices"
      //
        start = System.currentTimeMillis();
-       classicDao.findRecentOrdersForCustomer(customerCAF);
+       classicDao.findRecentOrdersForCustomer_method_caching(customerCAF);
        duration  = System.currentTimeMillis() -start;
-       log.info("1st orders for " +customerCAF.getCustomerName()+"  took " +(duration)+ " ms");
+       log.info("1st orders for " +customerCAF +"  took " +(duration)+ " ms");
 
      //
      // second call should pull from cache
      //
         start = System.currentTimeMillis();
-       classicDao.findRecentOrdersForCustomer(customerCAF);
+       classicDao.findRecentOrdersForCustomer_method_caching(customerCAF);
        duration  = System.currentTimeMillis() -start;
-      log.info("2nd orders for " +customerCAF.getCustomerName()+"  took " +(duration)+ " ms");
+      log.info("2nd orders for " +customerCAF +"  took " +(duration)+ " ms");
 
 
 
@@ -123,9 +123,9 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
      // third call should pull from DB
      //
         start = System.currentTimeMillis();
-       classicDao.findRecentOrdersForCustomer(customerMini);
+       classicDao.findRecentOrdersForCustomer_method_caching(customerMini);
        duration  = System.currentTimeMillis() -start;
-    log.info("3rd orders for " +customerMini.getCustomerName()+"  took " +(duration)+ " ms");
+    log.info("3rd orders for " +customerMini +"  took " +(duration)+ " ms");
 
 
       classicDao.getHibernateStatistics() ;
@@ -133,10 +133,10 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
      classicDao.printEhcacheStatistics();
 
      //
-     // assert we got a hit count in the "offices" cache we setup for findAllOffices() method
+     // assert we got a hit count in the "offices" cache we setup for findAllOffices_method_caching_LAB() method
      //
      CacheManager cacheManager = CacheManager.getInstance();
-     Cache officesCache = cacheManager.getCache("custorders");
+     Cache officesCache = cacheManager.getCache("customersByName");
      long cacheHits = officesCache.getStatistics().getCacheHits();
      System.out.println( " offices Cache hits ="+cacheHits);
      assertEquals("expected just one custorders cache hit ",1, cacheHits) ;
@@ -154,15 +154,15 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 
 
     @Test
-    public void findAllCustomersInUsState() {
+    public void findAllCustomersInUsState_query_cache() {
         long start = System.currentTimeMillis();
-        List<Customer> customers = classicDao.findAllCustomersInUsState("CA");
+        List<Customer> customers = classicDao.findAllCustomersInUsState_query_cache("CA");
 
 
         long duration  = System.currentTimeMillis() -start;
         log.info("1st  took " +duration+ " ms");
          start = System.currentTimeMillis();
-        List<Customer> customers2 = classicDao.findAllCustomersInUsState("CA");
+        List<Customer> customers2 = classicDao.findAllCustomersInUsState_query_cache("CA");
 
         duration  = System.currentTimeMillis() -start;
         log.info("2nd  took " +duration+ " ms");
@@ -170,13 +170,10 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
     }
 
     @Test
-    public void findOrdersForCustomer() {
+    public void findRecentOrdersForCustomer_method_caching_Example_Test() {
         String customerName = "CAF Imports";
-        Customer customer = classicDao.findCustomerByCustomerName(customerName);
-        log.info("found customer " + customer);
-        assertThat(customer.getCustomerName(), is(customerName));
 
-        List<Order> orders = classicDao.findRecentOrdersForCustomer(customer);
+        List<Order> orders = classicDao.findRecentOrdersForCustomer_method_caching(customerName);
         for (Order order : orders) {
             log.info("order    :" + order);
             log.info("  detail :" + order.getOrderDetail());
@@ -185,18 +182,25 @@ public class ClassicDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 
     @Test
     public void findAllOffices() {
-        List<Office> offices = classicDao.findAllOffices();
+        List<Office> offices = classicDao.findAllOffices_method_caching_LAB();
         for (Office office : offices) {
             log.info("office " + office);
         }
     }
 
     @Test
-    public void findSalesOfficeForEachCustomer() {
-        List<Object[]> offCusts = classicDao.findSalesOfficeForEachCustomer();
+    public void findSalesOfficeForEachCustomer_JCache_example_Test() {
+        List<Object[]> offCusts = classicDao.findSalesOfficeForEachCustomer_JCache_example();
+         classicDao.findSalesOfficeForEachCustomer_JCache_example();
         for (Object[] offCust : offCusts) {
             System.out.println("the sales office for customer " + offCust[1] + " is " + offCust[0]);
         }
+
+        CacheManager cacheManager = CacheManager.getInstance();
+        Cache officesCache = cacheManager.getCache("custoff");
+        long cacheHits = officesCache.getStatistics().getCacheHits();
+        System.out.println( " offices Cache hits ="+cacheHits);
+        assertEquals("expected just one custorders cache hit ",1, cacheHits) ;
     }
 
 

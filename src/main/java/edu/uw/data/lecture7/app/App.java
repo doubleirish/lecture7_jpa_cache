@@ -38,15 +38,15 @@ public class App
 
 
 //
-//    accountService.findAllCustomersInUsState("CA");
+//    accountService.findAllCustomersInUsState_query_cache("CA");
 //
-//    accountService.findAllCustomersInUsState("CA");
+//    accountService.findAllCustomersInUsState_query_cache("CA");
 //    accountService.getHibernateStatistics();
 //
-//    accountService.findAllCustomersInUsState("WA");
+//    accountService.findAllCustomersInUsState_query_cache("WA");
 //    accountService.getHibernateStatistics();
 //
-//    accountService.findAllCustomersInUsState("CA");
+//    accountService.findAllCustomersInUsState_query_cache("CA");
 
 
     accountService.getHibernateStatistics();

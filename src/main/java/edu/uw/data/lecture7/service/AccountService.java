@@ -16,7 +16,7 @@ public interface AccountService {
     List<Customer> findAllCustomersInUsState(String usState);
     List<Employee> findAllEmployeesWithFirstName_query_LAB(String usState);
 
-    //List<Office> findAllOffices(String usState);
+    //List<Office> findAllOffices_method_caching_LAB(String usState);
 
     Statistics getHibernateStatistics();
 

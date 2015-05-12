@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Customer> findAllCustomersInUsState(String usState) {
-        return classicDao.findAllCustomersInUsState(usState);
+        return classicDao.findAllCustomersInUsState_query_cache(usState);
     }
 
     @Override
