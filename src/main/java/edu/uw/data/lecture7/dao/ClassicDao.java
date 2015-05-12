@@ -5,6 +5,7 @@ import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Employee;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import edu.uw.data.lecture7.model.Product;
 import org.hibernate.stat.Statistics;
 
 import java.util.List;
@@ -32,6 +33,13 @@ public interface ClassicDao {  // <Entity class , Primary Key aka Id class >)
 
     // cached query LAB
     List<Employee> findAllEmployeesWithFirstName_query_cache_LAB(String usState);
+
+
+   // named-query cache example
+    List<Product> findAllProducts_named_query_cache_example()  ;
+
+    // named-query cache LAB
+    List<Product> findByAvailability_named_query_cache_LAB()  ;
 
     // method caching example
     List<Order> findRecentOrdersForCustomer_method_caching(String customerName);

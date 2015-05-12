@@ -13,7 +13,6 @@ import java.util.Set;
         , @NamedQuery(name = "Customer.findByCustomerFirstAndLast",
         query = "SELECT c FROM Customer c  WHERE c.contactFirstname = :firstName   AND   c.contactLastname = :lastName ")
 
-//     TODO Lab query for "Customer.findByCity" @NamedQuery  goes Here")
 
         })
 @Entity

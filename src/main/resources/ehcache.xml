@@ -103,6 +103,27 @@
            diskPersistent="false"
            statistics="true"
             />
+
+    <cache name="query.Product"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"
+           diskPersistent="false"
+           statistics="true"
+            />
+
+
+    <cache name="query.ProductAvail"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"
+           diskPersistent="false"
+           statistics="true"
+            />
      <!-- TODO have to manually add in  statistics-->
 
 </ehcache>

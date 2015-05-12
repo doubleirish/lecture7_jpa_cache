@@ -8,6 +8,21 @@ import javax.persistence.*;
  * Created by credmond on 26/03/15.
  */
 
+@NamedQueries({
+        @NamedQuery(name = "Product.findAll"
+                , query = "SELECT p from Product p"
+                , hints ={@QueryHint(name="org.hibernate.cacheable",value="true"),
+                          @QueryHint(name="org.hibernate.cacheRegion",value="query.Product")}
+        )
+
+        , @NamedQuery(name = "Product.findByAvailability"
+                       ,query = "SELECT p  FROM Product p  WHERE quantityinstock !=0  order by quantityinstock desc "
+                     //TODO named query lab add QueryHints
+       
+                      )
+
+
+})
 @Entity
 @Table(name = "PRODUCTS", schema = "APP", catalog = "")
 

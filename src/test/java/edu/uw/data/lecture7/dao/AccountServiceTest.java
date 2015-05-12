@@ -62,6 +62,7 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
         String regionName = "edu.uw.data.lecture7.model.Customer";
         SecondLevelCacheStatistics level2CustomerEntityStats = stats.getSecondLevelCacheStatistics(regionName);
+        assertNotNull("ehcache region may be missing or incorrectly setup, or @Cache annotation may not exist for: "+regionName,level2CustomerEntityStats);
 
         log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2CustomerEntityStats.getPutCount());
         log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2CustomerEntityStats.getHitCount());
@@ -143,6 +144,7 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
         String regionName = "org.hibernate.cache.internal.StandardQueryCache";
         SecondLevelCacheStatistics level2QueryCacheStats = stats.getSecondLevelCacheStatistics(regionName);
+        assertNotNull("ehcache region may be missing or incorrectly setup, or @Cache annotation may not exist for: "+regionName,level2QueryCacheStats);
 
         log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2QueryCacheStats.getPutCount());
         log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2QueryCacheStats.getHitCount());
@@ -183,6 +185,7 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
         String regionName = "org.hibernate.cache.internal.StandardQueryCache";
         SecondLevelCacheStatistics level2QueryCacheStats = stats.getSecondLevelCacheStatistics(regionName);
+        assertNotNull("ehcache region may be missing or incorrectly setup, or @Cache annotation may not exist for: "+regionName,level2QueryCacheStats);
 
         log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2QueryCacheStats.getPutCount());
         log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2QueryCacheStats.getHitCount());
@@ -192,6 +195,84 @@ public class AccountServiceTest extends AbstractJUnit4SpringContextTests {
 
     }
 
+
+
+
+
+    @Test
+     public void verifyNamedQueryIsCached() {
+
+        //
+        // call the    query  the first ime
+        //
+        long start = System.currentTimeMillis();
+        service.findAllProducts_named_query_cache_example();
+        long duration  = System.currentTimeMillis() -start;
+        log.info("1st  took " +duration+ " ms");
+
+
+        //
+        // make same query a second time
+        //
+        start = System.currentTimeMillis();
+        service.findAllProducts_named_query_cache_example();
+        duration  = System.currentTimeMillis() -start;
+        log.info("2nd  took " +duration+ " ms");
+
+        //
+        //  check the hibernate cache hit stats and verify we got a hit on StandardQueryCache
+        //
+        Statistics stats = service.getHibernateStatistics();
+
+
+        String regionName = "query.Product";
+        SecondLevelCacheStatistics level2QueryCacheStats = stats.getSecondLevelCacheStatistics(regionName);
+
+        log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2QueryCacheStats.getPutCount());
+        log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2QueryCacheStats.getHitCount());
+        log.info("2nd Level Cache(" + regionName + ") Miss Count: " + level2QueryCacheStats.getMissCount());
+
+        assertThat(level2QueryCacheStats.getHitCount(), Is.is(greaterThan(0L)));  //QUEY CACHE HIT
+
+    }
+
+
+    @Test
+    public void findByAvailability_named_query_cache_Test_LAB() {
+
+        //
+        // call the    query  the first ime
+        //
+        long start = System.currentTimeMillis();
+        service.findByAvailability_named_query_cache_LAB();
+        long duration  = System.currentTimeMillis() -start;
+        log.info("1st  took " +duration+ " ms");
+
+
+        //
+        // make same query a second time
+        //
+        start = System.currentTimeMillis();
+        service.findByAvailability_named_query_cache_LAB();
+        duration  = System.currentTimeMillis() -start;
+        log.info("2nd  took " +duration+ " ms");
+
+        //
+        //  check the hibernate cache hit stats and verify we got a hit on StandardQueryCache
+        //
+        Statistics stats = service.getHibernateStatistics();
+
+
+        String regionName = "query.ProductAvail";
+        SecondLevelCacheStatistics level2QueryCacheStats = stats.getSecondLevelCacheStatistics(regionName);
+
+        log.info("2nd Level Cache(" + regionName + ") Put Count: " + level2QueryCacheStats.getPutCount());
+        log.info("2nd Level Cache(" + regionName + ") HIt Count: " + level2QueryCacheStats.getHitCount());
+        log.info("2nd Level Cache(" + regionName + ") Miss Count: " + level2QueryCacheStats.getMissCount());
+
+        assertThat(level2QueryCacheStats.getHitCount(), Is.is(greaterThan(0L)));  //QUEY CACHE HIT
+
+    }
 
 
 

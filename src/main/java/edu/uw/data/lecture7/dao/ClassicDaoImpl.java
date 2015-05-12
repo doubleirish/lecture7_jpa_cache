@@ -4,6 +4,7 @@ import edu.uw.data.lecture7.model.Customer;
 import edu.uw.data.lecture7.model.Employee;
 import edu.uw.data.lecture7.model.Office;
 import edu.uw.data.lecture7.model.Order;
+import edu.uw.data.lecture7.model.Product;
 import net.sf.ehcache.CacheManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -75,9 +76,26 @@ public class ClassicDaoImpl implements ClassicDao {
 
 
 
+    // named-query cache example
+    public List<Product> findAllProducts_named_query_cache_example()  {
+        log.info("find all products");
+
+        return em.createNamedQuery("Product.findAll", Product.class)
+                .getResultList();
+    }
 
 
-   @Cacheable("custorders")
+
+    // TODO named-query cache LAB
+    public List<Product> findByAvailability_named_query_cache_LAB()  {
+        log.info("find all products");
+
+        return em.createNamedQuery( "Product.findByAvailability", Product.class )
+                .getResultList();
+    }
+
+
+    @Cacheable("custorders")
     public List<Order> findRecentOrdersForCustomer_method_caching(String customerName) {
      long start = System.currentTimeMillis();
      List<Order> orders = em.createQuery(
